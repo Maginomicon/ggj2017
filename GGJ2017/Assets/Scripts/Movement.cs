@@ -27,15 +27,22 @@ public class Movement : MonoBehaviour
             Input.GetAxis("R_XAxis_" + playerNum) != 0)
         {
             float angle = Mathf.Atan2(Input.GetAxis("R_YAxis_" + playerNum),
-                Input.GetAxis("R_XAxis_" + playerNum)) * Mathf.Rad2Deg;
+                Input.GetAxis("R_XAxis_" + playerNum)) * Mathf.Rad2Deg -90f;
 
             transform.rotation = Quaternion.RotateTowards(transform.rotation,
-                Quaternion.AngleAxis(angle, Vector3.forward), 10.0f);
+                Quaternion.AngleAxis(angle, Vector3.forward), 180f);
         }
 
-
-        rg2D.velocity = new Vector2(Mathf.Lerp(0, move_h * speed, 0.8f),
+        if(Input.GetAxis("L_YAxis_" + playerNum) != 0 ||
+            Input.GetAxis("L_XAxis_" + playerNum) != 0)
+        {
+            rg2D.velocity = new Vector2(Mathf.Lerp(0, move_h * speed, 0.8f),
             Mathf.Lerp(0, move_v * speed, 0.8f));
+        }else
+        {
+
+        }
+        
 
     }
 }
