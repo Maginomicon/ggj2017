@@ -44,7 +44,7 @@ public class Movement : MonoBehaviour
             Mathf.Lerp(0, move_v * speed, 0.8f));
         }else
         {
-
+            rg2D.velocity = rg2D.velocity.normalized* speed;
         }
         
 
