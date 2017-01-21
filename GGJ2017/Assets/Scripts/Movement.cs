@@ -23,18 +23,22 @@ public class Movement : MonoBehaviour
     {
         float move_h = Input.GetAxis("L_XAxis_" + playerNum);
         float move_v = Input.GetAxis("L_YAxis_" + playerNum);
-        if (Input.GetAxis("R_YAxis_" + playerNum) != 0 ||
-            Input.GetAxis("R_XAxis_" + playerNum) != 0)
+
+        float rot_x = Input.GetAxis("R_XAxis_" + playerNum);
+        float rot_y = Input.GetAxis("R_YAxis_" + playerNum);
+
+        if (rot_x!= 0 ||
+            rot_y != 0)
         {
-            float angle = Mathf.Atan2(Input.GetAxis("R_YAxis_" + playerNum),
-                Input.GetAxis("R_XAxis_" + playerNum)) * Mathf.Rad2Deg -90f;
+            float angle = Mathf.Atan2(rot_y,
+                rot_x) * Mathf.Rad2Deg -90f;
 
             transform.rotation = Quaternion.RotateTowards(transform.rotation,
                 Quaternion.AngleAxis(angle, Vector3.forward), 180f);
         }
 
-        if(Input.GetAxis("L_YAxis_" + playerNum) != 0 ||
-            Input.GetAxis("L_XAxis_" + playerNum) != 0)
+        if(move_h != 0 ||
+            move_v != 0)
         {
             rg2D.velocity = new Vector2(Mathf.Lerp(0, move_h * speed, 0.8f),
             Mathf.Lerp(0, move_v * speed, 0.8f));
