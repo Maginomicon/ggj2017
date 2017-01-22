@@ -44,9 +44,18 @@ public class SegmentCollision : MonoBehaviour {
         }
 
         attemptLightUp(collision.gameObject);
-        
+
+        if(wave_mov_script_ == null)
+        {
+            Debug.Log("Warning: I have not WaveMove Script reference");
+            return;
+        }
+
         // If this is a destructive wave, the colliding object is a player that was not hit before, damage it!
-        if (wave_mov_script_.IsDestructive() && collision.gameObject.CompareTag("Player") && !wave_mov_script_.wasObjectAlreadyHit(collision.gameObject.GetInstanceID()))
+        bool destructive = wave_mov_script_.IsDestructive();
+        bool player_tag = collision.gameObject.CompareTag("Player");
+        bool not_yet_hit = !wave_mov_script_.wasObjectAlreadyHit(collision.gameObject.GetInstanceID());
+        if (destructive && player_tag && not_yet_hit)
         {
             Debug.Log("I am destroying " + collision.gameObject);
             Movement player = collision.gameObject.GetComponent<Movement>();
@@ -55,7 +64,7 @@ public class SegmentCollision : MonoBehaviour {
 
         }
 
-        Destroy(gameObject);
+        Destroy(gameObject, 0.2f);
     }
 
     void attemptLightUp(GameObject colider_obj)
