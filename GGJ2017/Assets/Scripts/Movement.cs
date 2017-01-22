@@ -20,12 +20,19 @@ public class Movement : MonoBehaviour
     private float time_last_locater_wave_;
     private float time_last_shot_wave_;
     private GameObject spawn_point_;
+    private PlayerManager player_manager_;
 
     public Color my_color = Color.blue; // TBD: Should be decided on player selection screen
     Color my_location_color;
     private float location_color_darkener = 0.8f;
 
+    private int max_health_ = 2;
     private int health = 2;
+
+    public void RegisterPlayerManager(PlayerManager pm)
+    {
+        player_manager_ = pm;
+    }
 
     // Use this for initialization
     void Start()
@@ -61,7 +68,19 @@ public class Movement : MonoBehaviour
             die();
         }
 
+        // Inform the PlayerManager that we've taken damage
+        player_manager_.PlayerHitCallBack();
 
+    }
+
+    public int GetMaxHealth()
+    {
+        return max_health_;
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
     void die()

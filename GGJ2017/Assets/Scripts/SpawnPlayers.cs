@@ -5,22 +5,38 @@ using UnityEngine;
 public class SpawnPlayers : MonoBehaviour {
 
     public PlayerAssigner pAss;
+    private PlayerManager player_manager_;
 	// Use this for initialization
 	void Start () {
         pAss = GameObject.Find("GameController").GetComponent<PlayerAssigner>();
-        if(pAss != null)
+        player_manager_ = GameObject.Find("GameController").GetComponent<PlayerManager>();
+
+        if(player_manager_ == null)
         {
-            for(int i = 0; i < pAss.players.Length; i++)
-            {
-                if (pAss.players[i].hasJoined)
-                {
-                    GameObject new_player = Instantiate<GameObject>(pAss.Player_Prefab, new Vector3(0,0,0), Quaternion.identity);
-                    new_player.GetComponent<Movement>().playerNum = pAss.players[i].joyStick;
-                    new_player.GetComponent<SpriteRenderer>().color = pAss.players[i].color;
-                    new_player.GetComponent<Movement>().my_color = pAss.players[i].color;
-                }
-            }
+            Debug.Log("I have no reference to a player manager!");
         }
+
+        if (pAss != null)
+            if (pAss != null)
+        {
+                List<Movement> player_movs = new List<Movement>();
+                for(int i = 0; i < pAss.players.Length; i++)
+                {
+                    if (pAss.players[i].hasJoined)
+                    {
+                        GameObject new_player = Instantiate<GameObject>(pAss.Player_Prefab, new Vector3(0,0,0), Quaternion.identity);
+                        new_player.GetComponent<Movement>().playerNum = pAss.players[i].joyStick;
+                        new_player.GetComponent<SpriteRenderer>().color = pAss.players[i].color;
+                        new_player.GetComponent<Movement>().my_color = pAss.players[i].color;
+
+                            player_movs.Add(new_player.GetComponent<Movement>());
+                    
+                    }
+
+                    
+                }
+                player_manager_.SetPlayerReferences(player_movs);
+            }
 	}
 	
 	// Update is called once per frame

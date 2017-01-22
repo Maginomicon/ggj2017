@@ -9,6 +9,9 @@ public class PlayerAssigner : MonoBehaviour {
     public Player[] players;
     public SelectCard[] cards;
 
+    private int player_count_;
+    private PlayerManager player_manager_;
+
     bool canStart = false;
 	// Use this for initialization
 	void Start () {
@@ -20,6 +23,12 @@ public class PlayerAssigner : MonoBehaviour {
             li.Add(p);
         }
         players = li.ToArray();
+
+        player_manager_ = gameObject.GetComponentInChildren<PlayerManager>();
+        if(player_manager_ == null)
+        {
+            Debug.Log("I have no reference to the player manager.");
+        }
         DontDestroyOnLoad(gameObject.transform);
 	}
 	
@@ -30,7 +39,6 @@ public class PlayerAssigner : MonoBehaviour {
             
             if(Input.GetButtonDown("A_" + (i+1)) && players[i].selectCard == null)
             {
-                Debug.Log("A_"+(i+1));
                 for (int j = 0; j < cards.Length; j++)
                 {
                     
@@ -47,10 +55,31 @@ public class PlayerAssigner : MonoBehaviour {
                 }
             }else  if(Input.GetButtonUp("Start_" + (i+1)) && canStart)
             {
+                if (player_manager_ == null)
+                {
+                    player_manager_ = gameObject.GetComponentInChildren<PlayerManager>();
+                }
+                if (player_manager_ == null)
+                {
+                    Debug.Log("I still have no reference to the player manager.");
+                }
+                // Communicate with player manager before loading the core game
+                player_manager_.SetNumPlayers(player_count_);
                 SceneManager.LoadScene("Playground");
             }
 
         }
+
+        player_count_ = countPlayers();
+
+        if(player_count_ >= 2)
+        {
+            canStart = true;
+        }
+    }
+
+    int countPlayers()
+    {
         int count = 0;
 
         for (int j = 0; j < cards.Length; j++)
@@ -61,9 +90,7 @@ public class PlayerAssigner : MonoBehaviour {
                 count++;
             }
         }
-        if(count >= 2)
-        {
-            canStart = true;
-        }
+
+        return count;
     }
 }
