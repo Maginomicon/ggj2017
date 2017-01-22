@@ -90,6 +90,11 @@ public class Movement : MonoBehaviour
         return health;
     }
 
+    public Player GetPlayerClass()
+    {
+        return playerClass;
+    }
+
     void die()
     {
         Destroy(gameObject);
