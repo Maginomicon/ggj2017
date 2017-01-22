@@ -7,6 +7,7 @@ public class SetWinText : MonoBehaviour {
     PlayerManager player_manager_;
     Text my_gui_text_;
     RawImage player_image_;
+    public SpriteRenderer win_Sprite;
 
 	// Use this for initialization
 	void Start () {
@@ -42,6 +43,7 @@ public class SetWinText : MonoBehaviour {
         }
 
         my_gui_text_.text = "Player " + player_manager_.GetWinningPlayerNum() + " won the game.";
-        player_image_.color = player_manager_.GetWinningPlayerColor();
+        win_Sprite.color = player_manager_.GetWinningPlayerColor();
+        //player_image_.color = player_manager_.GetWinningPlayerColor();
     }
 }
