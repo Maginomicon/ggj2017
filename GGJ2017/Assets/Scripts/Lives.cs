@@ -30,9 +30,9 @@ public class Lives : MonoBehaviour {
 	
     public void disableLife()
     {
-        if(lives >= 0)
+        if(lives > 0)
         {
-            life_indicators[lives--].SetActive(false);
+            life_indicators[--lives].SetActive(false);
         }
         
     }

@@ -21,6 +21,9 @@ public class HealthHud : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    takeDamage(Random.Range(1,5), 1);
+        //}
 	}
 }
