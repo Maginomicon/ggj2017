@@ -12,6 +12,8 @@ public class PlayerAssigner : MonoBehaviour {
     private int player_count_;
     private PlayerManager player_manager_;
 
+    bool state_player_select = true;
+
     bool canStart = false;
 	// Use this for initialization
 	void Start () {
@@ -34,48 +36,55 @@ public class PlayerAssigner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        for (int i = 0; i <= 10; i++)
+        if (state_player_select)
         {
-            
-            if(Input.GetButtonDown("A_" + (i+1)) && players[i].selectCard == null)
+            for (int i = 0; i <= 10; i++)
             {
-                for (int j = 0; j < cards.Length; j++)
+
+                if (Input.GetButtonDown("A_" + (i + 1)) && players[i].selectCard == null)
                 {
-                    
-                    if(cards[j].owner == null)
+                    for (int j = 0; j < cards.Length; j++)
                     {
-                        Debug.Log("Assigning Card " + j);
-                        cards[j].owner = players[i];
-                        players[i].selectCard = cards[j];
-                        break;
-                    }else
-                    {
-                        Debug.Log(cards[j].owner.joyStick);
+
+                        if (cards[j].owner == null)
+                        {
+                            Debug.Log("Assigning Card " + j);
+                            cards[j].owner = players[i];
+                            players[i].selectCard = cards[j];
+                            break;
+                        }
+                        else
+                        {
+                            Debug.Log(cards[j].owner.joyStick);
+                        }
                     }
                 }
-            }else  if(Input.GetButtonUp("Start_" + (i+1)) && canStart)
-            {
-                if (player_manager_ == null)
+                else if (Input.GetButtonUp("Start_" + (i + 1)) && canStart)
                 {
-                    player_manager_ = gameObject.GetComponentInChildren<PlayerManager>();
+                    if (player_manager_ == null)
+                    {
+                        player_manager_ = gameObject.GetComponentInChildren<PlayerManager>();
+                    }
+                    if (player_manager_ == null)
+                    {
+                        Debug.Log("I still have no reference to the player manager.");
+                    }
+                    // Communicate with player manager before loading the core game
+                    player_manager_.SetNumPlayers(player_count_);
+                    state_player_select = false;
+                    SceneManager.LoadScene("Playground");
                 }
-                if (player_manager_ == null)
-                {
-                    Debug.Log("I still have no reference to the player manager.");
-                }
-                // Communicate with player manager before loading the core game
-                player_manager_.SetNumPlayers(player_count_);
-                SceneManager.LoadScene("Playground");
+
             }
 
-        }
+            player_count_ = countPlayers();
 
-        player_count_ = countPlayers();
-
-        if(player_count_ >= 2)
-        {
-            canStart = true;
+            if (player_count_ >= 2)
+            {
+                canStart = true;
+            }
         }
+        
     }
 
     int countPlayers()
@@ -85,7 +94,7 @@ public class PlayerAssigner : MonoBehaviour {
         for (int j = 0; j < cards.Length; j++)
         {
             
-            if (cards[j] != null && cards[j]
+            if (state_player_select && cards[j]
                 .owner != null)
             {
                 count++;
