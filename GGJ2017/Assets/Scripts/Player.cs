@@ -1,15 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Image = UnityEngine.UI.Image;
+public class Player : MonoBehaviour{
 
-public class Player {
-
+    public bool hasJoined;
     public int joyStick;
     public SelectCard selectCard;
+    bool filling = false;
+    public Color color;
 
-    public Player(int joystick)
+    float timeElapsed = 0f;
+
+    public void clearSelectCard()
     {
-        this.joyStick = joystick;
-        selectCard = null;
+        this.selectCard = null;
+    }
+
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+        if(selectCard != null)
+        {
+            if (Input.GetButton("A_" + joyStick))
+            {
+                timeElapsed += Time.deltaTime*2;
+                selectCard.drawFill(Mathf.Clamp01(timeElapsed));
+            }
+            else if (Input.GetButtonUp("A_" + joyStick))
+            {
+                if (timeElapsed >= 1)
+                {
+                    Debug.Log("Player " + selectCard.player + " is Joystick " + joyStick);
+                    color = selectCard.gameObject.GetComponent<Image>().color;
+                    
+                    hasJoined = true;
+                    //selectCard.gameObject.SetActive(false);
+                }
+                else
+                {
+                    timeElapsed = 0;
+                    selectCard.drawFill(0);
+                    selectCard.owner = null;
+                    selectCard = null;
+                }
+            }
+        }
+        
+        
     }
 }

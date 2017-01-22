@@ -64,6 +64,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+       
         //Inputs from left stick
         float move_h = Input.GetAxis("L_XAxis_" + playerNum);
         float move_v = Input.GetAxis("L_YAxis_" + playerNum);
