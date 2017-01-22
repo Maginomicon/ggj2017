@@ -42,9 +42,19 @@ public class SegmentCollision : MonoBehaviour {
         {
             return;
         }
-        
-                
-        colorInjection color_script = collision.transform.parent.gameObject.GetComponentInChildren<colorInjection>();
+
+        GameObject go = null;
+        if (collision.transform.parent != null)
+        {
+            go = collision.transform.parent.gameObject;
+        }
+        colorInjection color_script = null;
+
+        if (go != null)
+        {
+            color_script = collision.transform.parent.gameObject.GetComponentInChildren<colorInjection>();
+        }
+
         if (color_script != null)
         {
             color_script.setColorForTime(wave_mov_script_.GetColor());
@@ -53,7 +63,7 @@ public class SegmentCollision : MonoBehaviour {
         if (wave_mov_script_.IsDestructive() && collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("I am destroying " + collision.gameObject);
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<Movement>().takeDamage(1);
         }
 
         Destroy(gameObject);

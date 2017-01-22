@@ -30,6 +30,13 @@ public class Player : MonoBehaviour{
             {
                 timeElapsed += Time.deltaTime*2;
                 selectCard.drawFill(Mathf.Clamp01(timeElapsed));
+                if (timeElapsed >= 1)
+                {
+                    color = selectCard.gameObject.GetComponent<Image>().color;
+
+                    hasJoined = true;
+                    //selectCard.gameObject.SetActive(false);
+                }
             }
             else if (Input.GetButtonUp("A_" + joyStick))
             {

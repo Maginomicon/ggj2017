@@ -21,9 +21,11 @@ public class Movement : MonoBehaviour
     private float time_last_shot_wave_;
     private GameObject spawn_point_;
 
-    Color my_color = Color.blue; // TBD: Should be decided on player selection screen
+    public Color my_color = Color.blue; // TBD: Should be decided on player selection screen
     Color my_location_color;
     private float location_color_darkener = 0.8f;
+
+    private int health = 2;
 
     // Use this for initialization
     void Start()
@@ -50,6 +52,23 @@ public class Movement : MonoBehaviour
         my_location_color.b *= location_color_darkener;
     }
 
+    public void takeDamage(int power)
+    {
+        health -= power;
+
+        if(health <= 0)
+        {
+            die();
+        }
+
+
+    }
+
+    void die()
+    {
+        Destroy(gameObject);
+    }
+
     void SpawnWave(Color col, GameObject wave_obj, bool destructive)
     {
         GameObject wave = Instantiate(wave_obj);
@@ -74,17 +93,17 @@ public class Movement : MonoBehaviour
         float rot_x = Input.GetAxis("R_XAxis_" + playerNum);
         float rot_y = Input.GetAxis("R_YAxis_" + playerNum);
 
-        bool R_trigger_pulled = Input.GetAxis("TriggersR_1") > 0;
-        bool L_trigger_pulled = Input.GetAxis("TriggersL_1") > 0;
+        bool R_trigger_pulled = Input.GetAxis("TriggersR_" + playerNum) > 0;
+        bool L_trigger_pulled = Input.GetAxis("TriggersL_" + playerNum) > 0;
 
-        if (R_trigger_pulled && Time.time >= time_last_locater_wave_ + locater_wave_cooldown_time)
+        if (L_trigger_pulled && Time.time >= time_last_locater_wave_ + locater_wave_cooldown_time)
         {
             time_last_locater_wave_ = Time.time;
 
             SpawnWave(my_location_color, wave_locater_obj, false);
         }
 
-        if (L_trigger_pulled && Time.time >= time_last_shot_wave_ + shot_wave_cooldown_time)
+        if (R_trigger_pulled && Time.time >= time_last_shot_wave_ + shot_wave_cooldown_time)
         {
             time_last_shot_wave_ = Time.time;
 

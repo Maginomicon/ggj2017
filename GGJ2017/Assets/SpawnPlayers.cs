@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnPlayers : MonoBehaviour {
 
-    PlayerAssigner pAss;
+    public PlayerAssigner pAss;
 	// Use this for initialization
 	void Start () {
         pAss = GameObject.Find("GameController").GetComponent<PlayerAssigner>();
@@ -17,6 +17,7 @@ public class SpawnPlayers : MonoBehaviour {
                     GameObject new_player = Instantiate<GameObject>(pAss.Player_Prefab, new Vector3(0,0,0), Quaternion.identity);
                     new_player.GetComponent<Movement>().playerNum = pAss.players[i].joyStick;
                     new_player.GetComponent<SpriteRenderer>().color = pAss.players[i].color;
+                    new_player.GetComponent<Movement>().my_color = pAss.players[i].color;
                 }
             }
         }
