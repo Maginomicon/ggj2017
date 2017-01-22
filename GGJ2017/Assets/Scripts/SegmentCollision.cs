@@ -43,30 +43,36 @@ public class SegmentCollision : MonoBehaviour {
             return;
         }
 
-        GameObject go = null;
-        if (collision.transform.parent != null)
-        {
-            go = collision.transform.parent.gameObject;
-        }
-        colorInjection color_script = null;
-
-        if (go != null)
-        {
-            color_script = collision.transform.parent.gameObject.GetComponentInChildren<colorInjection>();
-        }
-
-        if (color_script != null)
-        {
-            color_script.setColorForTime(wave_mov_script_.GetColor());
-        }
+        attemptLightUp(collision.gameObject);
         
-        if (wave_mov_script_.IsDestructive() && collision.gameObject.CompareTag("Player"))
+        // If this is a destructive wave, the colliding object is a player that was not hit before, damage it!
+        if (wave_mov_script_.IsDestructive() && collision.gameObject.CompareTag("Player") && !wave_mov_script_.wasObjectAlreadyHit(collision.gameObject.GetInstanceID()))
         {
             Debug.Log("I am destroying " + collision.gameObject);
             collision.gameObject.GetComponent<Movement>().takeDamage(1);
         }
 
         Destroy(gameObject);
+    }
+
+    void attemptLightUp(GameObject colider_obj)
+    {
+        GameObject go = null;
+        if (colider_obj.transform.parent != null)
+        {
+            go = colider_obj.transform.parent.gameObject;
+        }
+        colorInjection color_script = null;
+
+        if (go != null)
+        {
+            color_script = colider_obj.transform.parent.gameObject.GetComponentInChildren<colorInjection>();
+        }
+
+        if (color_script != null)
+        {
+            color_script.setColorForTime(wave_mov_script_.GetColor());
+        }
     }
 
     // Are we hitting the spaceship that spawned the Wave?

@@ -12,6 +12,7 @@ public class WaveMovement : MonoBehaviour {
     private Color color_;
     private bool destructive_;
     List<GameObject> segments_ = new List<GameObject>();
+    List<int> hit_list = new List<int>();
 
     // Gets called right after Instantiate (not Start() !!!!!)
     private void Awake()
@@ -59,6 +60,16 @@ public class WaveMovement : MonoBehaviour {
     }
 
     public string GetSpawnerName() { return spawner_name_; }
+
+    public void setObjectHit(int obj_id)
+    {
+        hit_list.Add(obj_id);
+    }
+
+    public bool wasObjectAlreadyHit(int obj_id)
+    {
+        return hit_list.Contains(obj_id);
+    }
 
     public void SetColor(Color col)
     {
