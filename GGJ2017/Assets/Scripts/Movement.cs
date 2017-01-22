@@ -7,15 +7,18 @@ public class Movement : MonoBehaviour
 
     public float speed = 1.0f;
     public float maxSpeed = 20f;
-    public float fire_cooldown_time = 2f;
+    public float locater_wave_cooldown_time = 2f;
+    public float shot_wave_cooldown_time = 3f;
 
     public GameObject wave_locater_obj;
+    public GameObject wave_shot_obj;
 
     //Controller
     public int playerNum = 1;
 
     private Rigidbody2D rg2D;
-    private float time_last_fired_;
+    private float time_last_locater_wave_;
+    private float time_last_shot_wave_;
     private GameObject spawn_point_;
 
     Color my_color = Color.blue; // TBD: Should be decided on player selection screen
@@ -27,7 +30,8 @@ public class Movement : MonoBehaviour
     {
         rg2D = GetComponent<Rigidbody2D>();
        // transform.Rotate(Vector3.forward);
-        time_last_fired_ = 0f;
+        time_last_locater_wave_ = 0f;
+        time_last_shot_wave_ = 0f;
 
         // Find spawnpoint
         Component[] children = GetComponentsInChildren<Transform>();
@@ -46,6 +50,17 @@ public class Movement : MonoBehaviour
         my_location_color.b *= location_color_darkener;
     }
 
+    void SpawnWave(Color col, GameObject wave_obj)
+    {
+        GameObject wave = Instantiate(wave_obj);
+
+        WaveMovement wave_mv_script = wave.GetComponent<WaveMovement>();
+        wave_mv_script.SetPosition(spawn_point_.transform.position);
+        wave_mv_script.SetEulerAngles(spawn_point_.transform.eulerAngles);
+        wave_mv_script.SetSpawnerName(gameObject.name);
+        wave_mv_script.SetColor(col);
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -57,21 +72,21 @@ public class Movement : MonoBehaviour
         float rot_x = Input.GetAxis("R_XAxis_" + playerNum);
         float rot_y = Input.GetAxis("R_YAxis_" + playerNum);
 
-        bool trigger_pulled = Input.GetAxis("TriggersR_1") > 0;
+        bool R_trigger_pulled = Input.GetAxis("TriggersR_1") > 0;
+        bool L_trigger_pulled = Input.GetAxis("TriggersL_1") > 0;
 
-        if (trigger_pulled && Time.time >= time_last_fired_ + fire_cooldown_time)
+        if (R_trigger_pulled && Time.time >= time_last_locater_wave_ + locater_wave_cooldown_time)
         {
-            time_last_fired_ = Time.time;
-            GameObject wave = Instantiate(wave_locater_obj);
+            time_last_locater_wave_ = Time.time;
 
-            //Debug.Log("SpawnPoint at " + spawn_point_.transform.position);
-            WaveMovement wave_mv_script = wave.GetComponent<WaveMovement>();
-            wave_mv_script.SetPosition(spawn_point_.transform.position);
-            wave_mv_script.SetEulerAngles(spawn_point_.transform.eulerAngles);
-            wave_mv_script.SetSpawnerName(gameObject.name);
-            
+            SpawnWave(my_location_color, wave_locater_obj);
+        }
 
-            wave_mv_script.SetColor(my_location_color);
+        if (L_trigger_pulled && Time.time >= time_last_shot_wave_ + shot_wave_cooldown_time)
+        {
+            time_last_shot_wave_ = Time.time;
+
+            SpawnWave(my_color, wave_shot_obj);
         }
 
         //Rotation
