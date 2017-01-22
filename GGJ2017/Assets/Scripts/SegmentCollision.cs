@@ -88,7 +88,17 @@ public class SegmentCollision : MonoBehaviour {
 
         if (color_script != null)
         {
-            color_script.setColorForTime(wave_mov_script_.GetColor());
+            Color col;
+            if (wave_mov_script_ == null)
+            {
+                Debug.Log("warning: I cannot find the wave_move_script_...");
+            }
+            else
+            {
+                col = wave_mov_script_.GetColor();
+                color_script.setColorForTime(col);
+            }
+            
         }
     }
 

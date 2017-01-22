@@ -51,14 +51,16 @@ public class colorInjection : MonoBehaviour {
 
     public void setColorForTime(Color col)
     {
+        
         Color eventual_col = enforced_default_color_;
 
-        if (eventual_col == null)
+        if (eventual_col == Color.black)
         {
             eventual_col = col;
         }
 
         eventual_col.a = 1f;
+        
         renderer_.color = eventual_col;
         renderer_.enabled = true;
 
