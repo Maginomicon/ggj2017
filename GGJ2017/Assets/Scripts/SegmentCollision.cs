@@ -78,7 +78,12 @@ public class SegmentCollision : MonoBehaviour {
 
         if (go != null)
         {
-            color_script = colider_obj.transform.parent.gameObject.GetComponentInChildren<colorInjection>();
+            color_script = go.GetComponentInChildren<colorInjection>();
+        }
+
+        else
+        {
+            color_script = colider_obj.gameObject.GetComponentInChildren<colorInjection>();
         }
 
         if (color_script != null)

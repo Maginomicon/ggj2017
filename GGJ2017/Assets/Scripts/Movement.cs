@@ -30,6 +30,8 @@ public class Movement : MonoBehaviour
     private int health = 2;
     public HealthHud healthHud;
     public Player playerClass;
+    // Color injector script in case we get hit by an enemy
+    private colorInjection my_color_injection_;
 
     public void RegisterPlayerManager(PlayerManager pm)
     {
@@ -45,6 +47,15 @@ public class Movement : MonoBehaviour
        // transform.Rotate(Vector3.forward);
         time_last_locater_wave_ = 0f;
         time_last_shot_wave_ = 0f;
+
+        my_color_injection_ = gameObject.GetComponent<colorInjection>();
+        if( my_color_injection_ == null)
+        {
+            Debug.Log("Cannot find color injection script. I will not light up when hit by another player.");
+        }else
+        {
+            my_color_injection_.SetEnforcedColor(my_color);
+        }
 
         // Find spawnpoint
         Component[] children = GetComponentsInChildren<Transform>();
