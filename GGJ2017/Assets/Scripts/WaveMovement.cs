@@ -9,6 +9,7 @@ public class WaveMovement : MonoBehaviour {
     public float wave_speed = 10f;
 
     private string spawner_name_;
+    private Color color_;
     List<GameObject> segments_ = new List<GameObject>();
 
     // Use this for initialization
@@ -59,6 +60,24 @@ public class WaveMovement : MonoBehaviour {
     }
 
     public string GetSpawnerName() { return spawner_name_; }
+
+    public void SetColor(Color col)
+    {
+        color_ = col;
+        foreach(GameObject segment in segments_)
+        {
+            if (segment != null)
+            {
+                SpriteRenderer renderer = segment.GetComponentInChildren<SpriteRenderer>();
+                renderer.color = col;
+            }
+        }
+    }
+
+    public Color GetColor()
+    {
+        return color_;
+    }
 
     void DisableSegment(int idx)
     {

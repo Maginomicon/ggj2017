@@ -39,7 +39,8 @@ public class SegmentCollision : MonoBehaviour {
         colorInjection color_script = collision.transform.parent.gameObject.GetComponentInChildren<colorInjection>();
         if (color_script != null)
         {
-            color_script.setColorForTime(Color.red);
+            WaveMovement wave_mov_script = gameObject.transform.parent.GetComponentInChildren<WaveMovement>();
+            color_script.setColorForTime(wave_mov_script.GetColor());
         }
     }
 

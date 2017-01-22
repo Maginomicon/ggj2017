@@ -18,6 +18,10 @@ public class Movement : MonoBehaviour
     private float time_last_fired_;
     private GameObject spawn_point_;
 
+    Color my_color = Color.blue; // TBD: Should be decided on player selection screen
+    Color my_location_color;
+    private float location_color_darkener = 0.8f;
+
     // Use this for initialization
     void Start()
     {
@@ -34,6 +38,12 @@ public class Movement : MonoBehaviour
                 spawn_point_ = child.gameObject;
             }
         }
+
+        my_location_color = my_color;
+
+        my_location_color.r *= location_color_darkener;
+        my_location_color.g *= location_color_darkener;
+        my_location_color.b *= location_color_darkener;
     }
 
     // Update is called once per frame
@@ -59,6 +69,9 @@ public class Movement : MonoBehaviour
             wave_mv_script.SetPosition(spawn_point_.transform.position);
             wave_mv_script.SetEulerAngles(spawn_point_.transform.eulerAngles);
             wave_mv_script.SetSpawnerName(gameObject.name);
+            
+
+            wave_mv_script.SetColor(my_location_color);
         }
 
         //Rotation
