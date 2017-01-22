@@ -49,7 +49,10 @@ public class SegmentCollision : MonoBehaviour {
         if (wave_mov_script_.IsDestructive() && collision.gameObject.CompareTag("Player") && !wave_mov_script_.wasObjectAlreadyHit(collision.gameObject.GetInstanceID()))
         {
             Debug.Log("I am destroying " + collision.gameObject);
-            collision.gameObject.GetComponent<Movement>().takeDamage(1);
+            Movement player = collision.gameObject.GetComponent<Movement>();
+            player.takeDamage(1);
+            wave_mov_script_.setObjectHit(collision.gameObject.GetInstanceID());
+
         }
 
         Destroy(gameObject);
