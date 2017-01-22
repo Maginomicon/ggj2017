@@ -28,6 +28,8 @@ public class Movement : MonoBehaviour
 
     private int max_health_ = 2;
     private int health = 2;
+    public HealthHud healthHud;
+    public Player playerClass;
 
     public void RegisterPlayerManager(PlayerManager pm)
     {
@@ -37,6 +39,8 @@ public class Movement : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        healthHud = GameObject.Find("Lives HUD").GetComponent<HealthHud>();
+
         rg2D = GetComponent<Rigidbody2D>();
        // transform.Rotate(Vector3.forward);
         time_last_locater_wave_ = 0f;
@@ -66,6 +70,9 @@ public class Movement : MonoBehaviour
         if(health <= 0)
         {
             die();
+        }else
+        {
+            healthHud.takeDamage(playerClass.playerNum, power);
         }
 
         // Inform the PlayerManager that we've taken damage

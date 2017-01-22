@@ -5,6 +5,7 @@ using Image = UnityEngine.UI.Image;
 public class Player : MonoBehaviour{
 
     public bool hasJoined;
+    public int playerNum;
     public int joyStick;
     public SelectCard selectCard;
     bool filling = false;
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour{
                 {
                     Debug.Log("Player " + selectCard.player + " is Joystick " + joyStick);
                     color = selectCard.gameObject.GetComponent<Image>().color;
+                    playerNum = selectCard.player;
                     
                     hasJoined = true;
                     //selectCard.gameObject.SetActive(false);

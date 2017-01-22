@@ -28,8 +28,9 @@ public class SpawnPlayers : MonoBehaviour {
                         new_player.GetComponent<Movement>().playerNum = pAss.players[i].joyStick;
                         new_player.GetComponent<SpriteRenderer>().color = pAss.players[i].color;
                         new_player.GetComponent<Movement>().my_color = pAss.players[i].color;
+                        new_player.GetComponent<Movement>().playerClass = pAss.players[i];
 
-                            player_movs.Add(new_player.GetComponent<Movement>());
+                        player_movs.Add(new_player.GetComponent<Movement>());
                     
                     }
 
