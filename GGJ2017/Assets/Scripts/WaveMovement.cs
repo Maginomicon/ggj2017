@@ -36,6 +36,7 @@ public class WaveMovement : MonoBehaviour {
             segments_.Add(new_segment_obj);
         }
 
+        // Simuate an arc by destroying the unneeded part from the circle.
         for (int i = 0; i < (360 - start_arc_length) / segment_obj_degrees; i++)
         {
             DisableSegment(i);
@@ -61,7 +62,6 @@ public class WaveMovement : MonoBehaviour {
 
     void DisableSegment(int idx)
     {
-        segments_[idx].active = false;
         Destroy(segments_[idx]);
     }
 	

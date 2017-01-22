@@ -29,8 +29,17 @@ public class SegmentCollision : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (!collision.gameObject.CompareTag("WaveSegment")) {
-           Destroy(gameObject);
+        if (collision.gameObject.CompareTag("WaveSegment"))
+        {
+            return;
+        }
+
+        Destroy(gameObject);
+                
+        colorInjection color_script = collision.transform.parent.gameObject.GetComponentInChildren<colorInjection>();
+        if (color_script != null)
+        {
+            color_script.setColorForTime(Color.red);
         }
     }
 
