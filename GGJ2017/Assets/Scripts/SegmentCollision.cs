@@ -13,7 +13,6 @@ public class SegmentCollision : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         rb_ = GetComponent<Rigidbody2D>();
-        lifetime = 20f;
         destructionTimer_ = Time.time + lifetime;
 
         wave_mov_script_ = gameObject.GetComponentInParent<WaveMovement>();
