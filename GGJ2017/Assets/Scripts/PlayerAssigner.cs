@@ -81,11 +81,12 @@ public class PlayerAssigner : MonoBehaviour {
     int countPlayers()
     {
         int count = 0;
-
+        
         for (int j = 0; j < cards.Length; j++)
         {
-
-            if (cards[j].owner != null)
+            
+            if (cards[j] != null && cards[j]
+                .owner != null)
             {
                 count++;
             }
