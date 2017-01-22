@@ -11,11 +11,20 @@ public class SegmentCollision : MonoBehaviour {
     private WaveMovement wave_mov_script_;
 
     // Use this for initialization
-    void Awake () {
+    void Start () {
         rb_ = GetComponent<Rigidbody2D>();
         destructionTimer_ = Time.time + lifetime;
 
-        wave_mov_script_ = gameObject.GetComponentInParent<WaveMovement>();
+        GameObject parent = gameObject.transform.parent.gameObject;
+        if (parent != null)
+        {
+            wave_mov_script_ = parent.GetComponentInChildren<WaveMovement>();
+        }
+  
+        if(wave_mov_script_ == null)
+        {
+            Debug.Log("Parent  WaveMovement script not found.");
+        }
 	}
 
     private void FixedUpdate()
@@ -33,15 +42,21 @@ public class SegmentCollision : MonoBehaviour {
         {
             return;
         }
-
-        Destroy(gameObject);
+        
                 
         colorInjection color_script = collision.transform.parent.gameObject.GetComponentInChildren<colorInjection>();
         if (color_script != null)
         {
-            WaveMovement wave_mov_script = gameObject.transform.parent.GetComponentInChildren<WaveMovement>();
-            color_script.setColorForTime(wave_mov_script.GetColor());
+            color_script.setColorForTime(wave_mov_script_.GetColor());
         }
+        
+        if (wave_mov_script_.IsDestructive() && collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("I am destroying " + collision.gameObject);
+            Destroy(collision.gameObject);
+        }
+
+        Destroy(gameObject);
     }
 
     // Are we hitting the spaceship that spawned the Wave?

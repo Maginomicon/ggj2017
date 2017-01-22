@@ -10,15 +10,14 @@ public class WaveMovement : MonoBehaviour {
 
     private string spawner_name_;
     private Color color_;
+    private bool destructive_;
     List<GameObject> segments_ = new List<GameObject>();
 
-    // Use this for initialization
-    void Start () {
-        spawner_name_ = "unnamed";
-	}
-
+    // Gets called right after Instantiate (not Start() !!!!!)
     private void Awake()
     {
+        spawner_name_ = "unnamed";
+        destructive_ = false;
 
         if (segment_object == null)
         {
@@ -77,6 +76,15 @@ public class WaveMovement : MonoBehaviour {
     public Color GetColor()
     {
         return color_;
+    }
+
+    public void SetDestructive(bool destructive)
+    {
+        destructive_ = destructive;
+    }
+    public bool IsDestructive()
+    {
+        return destructive_;
     }
 
     void DisableSegment(int idx)

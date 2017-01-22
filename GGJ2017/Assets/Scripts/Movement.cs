@@ -50,7 +50,7 @@ public class Movement : MonoBehaviour
         my_location_color.b *= location_color_darkener;
     }
 
-    void SpawnWave(Color col, GameObject wave_obj)
+    void SpawnWave(Color col, GameObject wave_obj, bool destructive)
     {
         GameObject wave = Instantiate(wave_obj);
 
@@ -59,6 +59,7 @@ public class Movement : MonoBehaviour
         wave_mv_script.SetEulerAngles(spawn_point_.transform.eulerAngles);
         wave_mv_script.SetSpawnerName(gameObject.name);
         wave_mv_script.SetColor(col);
+        wave_mv_script.SetDestructive(destructive);
     }
 
     // Update is called once per frame
@@ -80,14 +81,14 @@ public class Movement : MonoBehaviour
         {
             time_last_locater_wave_ = Time.time;
 
-            SpawnWave(my_location_color, wave_locater_obj);
+            SpawnWave(my_location_color, wave_locater_obj, false);
         }
 
         if (L_trigger_pulled && Time.time >= time_last_shot_wave_ + shot_wave_cooldown_time)
         {
             time_last_shot_wave_ = Time.time;
 
-            SpawnWave(my_color, wave_shot_obj);
+            SpawnWave(my_color, wave_shot_obj, true);
         }
 
         //Rotation
