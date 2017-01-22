@@ -135,8 +135,8 @@ public class Movement : MonoBehaviour
         float rot_x = Input.GetAxis("R_XAxis_" + playerNum);
         float rot_y = Input.GetAxis("R_YAxis_" + playerNum);
 
-        bool R_trigger_pulled = Input.GetAxis("TriggersR_" + playerNum) > 0;
-        bool L_trigger_pulled = Input.GetAxis("TriggersL_" + playerNum) > 0;
+        bool R_trigger_pulled = Input.GetAxis("TriggersR_" + playerNum) != 0;
+        bool L_trigger_pulled = Input.GetAxis("TriggersL_" + playerNum) != 0;
 
         if (L_trigger_pulled && Time.time >= time_last_locater_wave_ + locater_wave_cooldown_time)
         {

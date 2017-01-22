@@ -11,7 +11,7 @@ public class SelectCard : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        fillBar = gameObject.transform.FindChild("FillBar").GetComponent<RectTransform>();
+        fillBar = gameObject.transform.FindChild("Mask").transform.FindChild("FillBar").GetComponent<RectTransform>();
 
     }
 	

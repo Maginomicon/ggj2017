@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SetWinText : MonoBehaviour {
     PlayerManager player_manager_;
@@ -32,6 +33,14 @@ public class SetWinText : MonoBehaviour {
 	
 	void FixedUpdate () {
         SetText();
+        for(int i = 1; i < 12; i++)
+        {
+            if(Input.GetButtonUp("Start_" + i))
+            {
+                Destroy(GameObject.Find("GameController"));
+                SceneManager.LoadScene("Hud");
+            }
+        }
 	}
 
     void SetText()
