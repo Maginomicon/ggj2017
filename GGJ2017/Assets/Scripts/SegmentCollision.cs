@@ -82,7 +82,7 @@ public class SegmentCollision : MonoBehaviour {
             Destroy(hitwall_snd, 10f);
         }
 
-        Destroy(gameObject, 0.1f);
+        Destroy(gameObject);
     }
 
     void attemptLightUp(GameObject colider_obj)
