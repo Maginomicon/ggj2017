@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
 
     public GameObject wave_locater_obj;
     public GameObject wave_shot_obj;
+    public GameObject explosion;
 
     //Controller
     public int playerNum = 1;
@@ -91,7 +92,10 @@ public class Movement : MonoBehaviour
     {
         health -= power;
 
-        if(health <= 0)
+        healthHud.takeDamage(playerClass.playerNum, power);
+        
+
+        if (health <= 0)
         {
             die();
         }else
@@ -148,6 +152,9 @@ public class Movement : MonoBehaviour
         renderer.enabled = false;   
         this.enabled = false;
         Destroy(gameObject,2f);
+
+        Instantiate<GameObject>(explosion, gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(gameObject);
     }
 
     void SpawnWave(Color col, GameObject wave_obj, bool destructive)
@@ -174,8 +181,8 @@ public class Movement : MonoBehaviour
         float rot_x = Input.GetAxis("R_XAxis_" + playerNum);
         float rot_y = Input.GetAxis("R_YAxis_" + playerNum);
 
-        bool R_trigger_pulled = Input.GetAxis("TriggersR_" + playerNum) > 0;
-        bool L_trigger_pulled = Input.GetAxis("TriggersL_" + playerNum) > 0;
+        bool R_trigger_pulled = Input.GetAxis("TriggersR_" + playerNum) != 0;
+        bool L_trigger_pulled = Input.GetAxis("TriggersL_" + playerNum) != 0;
 
         bool L_constantly_pulled = L_trigger_pulled && L_prev_pulled_;
         bool R_constantly_pulled = R_trigger_pulled && R_prev_pulled_;
