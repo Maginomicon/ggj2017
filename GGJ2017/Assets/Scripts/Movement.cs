@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
 
     public GameObject wave_locater_obj;
     public GameObject wave_shot_obj;
+    public GameObject explosion;
 
     //Controller
     public int playerNum = 1;
@@ -108,6 +109,7 @@ public class Movement : MonoBehaviour
 
     void die()
     {
+        Instantiate<GameObject>(explosion, gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
     }
 
