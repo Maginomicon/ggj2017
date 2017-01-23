@@ -79,12 +79,12 @@ public class Movement : MonoBehaviour
     {
         health -= power;
 
-        if(health <= 0)
+        healthHud.takeDamage(playerClass.playerNum, power);
+        
+
+        if (health <= 0)
         {
             die();
-        }else
-        {
-            healthHud.takeDamage(playerClass.playerNum, power);
         }
 
         // Inform the PlayerManager that we've taken damage
