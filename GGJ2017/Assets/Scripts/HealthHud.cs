@@ -15,7 +15,7 @@ public class HealthHud : MonoBehaviour {
     {
         for(int i = 0; i < health; i++)
         {
-            playerHealth[player - 1].GetComponent<Lives>().disableLife();
+            playerHealth[player-1].GetComponent<Lives>().disableLife();
         }
     }
 	

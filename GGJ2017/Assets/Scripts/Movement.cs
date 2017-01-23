@@ -100,7 +100,7 @@ public class Movement : MonoBehaviour
             die();
         }else
         {
-            healthHud.takeDamage(playerClass.playerNum, power);
+            //healthHud.takeDamage(playerClass.playerNum, power);
 
             AudioSource ShipDamaged = Instantiate(PlayerShipDamaged);
             ShipDamaged.Play();
