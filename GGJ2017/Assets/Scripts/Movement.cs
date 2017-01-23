@@ -22,6 +22,15 @@ public class Movement : MonoBehaviour
     private GameObject spawn_point_;
     private PlayerManager player_manager_;
 
+    //Audio
+    public AudioSource PlayerShipExplodeLayer01;
+    public AudioSource PlayerShipExplodeLayer02;
+    public AudioSource DamageWaveShoot;
+    public AudioSource LocateWaveShoot;
+    public AudioSource PlayerShipDamaged;
+    public AudioSource AbilityFizzle;
+    public AudioSource Thrust;
+
     public Color my_color = Color.blue; // TBD: Should be decided on player selection screen
     Color my_location_color;
     private float location_color_darkener = 0.8f;
@@ -32,6 +41,9 @@ public class Movement : MonoBehaviour
     public Player playerClass;
     // Color injector script in case we get hit by an enemy
     private colorInjection my_color_injection_;
+
+    private bool L_prev_pulled_;
+    private bool R_prev_pulled_;
 
     public void RegisterPlayerManager(PlayerManager pm)
     {
@@ -44,22 +56,22 @@ public class Movement : MonoBehaviour
         healthHud = GameObject.Find("Lives HUD").GetComponent<HealthHud>();
 
         rg2D = GetComponent<Rigidbody2D>();
-       // transform.Rotate(Vector3.forward);
+        // transform.Rotate(Vector3.forward);
         time_last_locater_wave_ = 0f;
         time_last_shot_wave_ = 0f;
 
         my_color_injection_ = gameObject.GetComponent<colorInjection>();
-        if( my_color_injection_ == null)
+        if (my_color_injection_ == null)
         {
             Debug.Log("Cannot find color injection script. I will not light up when hit by another player.");
-        }else
+        } else
         {
             my_color_injection_.SetEnforcedColor(my_color);
         }
 
         // Find spawnpoint
         Component[] children = GetComponentsInChildren<Transform>();
-        foreach(Component child in children)
+        foreach (Component child in children)
         {
             if (child.gameObject.CompareTag("SpawnPoint"))
             {
@@ -72,6 +84,7 @@ public class Movement : MonoBehaviour
         my_location_color.r *= location_color_darkener;
         my_location_color.g *= location_color_darkener;
         my_location_color.b *= location_color_darkener;
+
     }
 
     public void takeDamage(int power)
@@ -84,6 +97,11 @@ public class Movement : MonoBehaviour
         }else
         {
             healthHud.takeDamage(playerClass.playerNum, power);
+
+            AudioSource ShipDamaged = Instantiate(PlayerShipDamaged);
+            ShipDamaged.Play();
+            Destroy(ShipDamaged, 10f);
+            time_last_shot_wave_ = Time.time;
         }
 
         // Inform the PlayerManager that we've taken damage
@@ -108,7 +126,28 @@ public class Movement : MonoBehaviour
 
     void die()
     {
-        Destroy(gameObject);
+        if(PlayerShipExplodeLayer01 == null)
+        {
+            Debug.Log("Warning Audio Source not found.");
+        }
+
+
+        AudioSource explode_1 = Instantiate(PlayerShipExplodeLayer01);
+        AudioSource explode_2 = Instantiate(PlayerShipExplodeLayer02);
+        explode_1.Play();
+        explode_2.Play();
+        Destroy(explode_1, 10f);
+        Destroy(explode_2, 10f);
+
+
+        //PlayerShipExplodeLayer01.Play();
+        //PlayerShipExplodeLayer02.Play();
+        //AudioSource.PlayClipAtPoint(PlayerShipExplodeLayer01.clip, new Vector3(0f, 0f, 0f));
+        //AudioSource.PlayClipAtPoint(PlayerShipExplodeLayer02.clip, new Vector3(0f, 0f, 0f));
+        SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
+        renderer.enabled = false;   
+        this.enabled = false;
+        Destroy(gameObject,2f);
     }
 
     void SpawnWave(Color col, GameObject wave_obj, bool destructive)
@@ -138,18 +177,47 @@ public class Movement : MonoBehaviour
         bool R_trigger_pulled = Input.GetAxis("TriggersR_" + playerNum) > 0;
         bool L_trigger_pulled = Input.GetAxis("TriggersL_" + playerNum) > 0;
 
+        bool L_constantly_pulled = L_trigger_pulled && L_prev_pulled_;
+        bool R_constantly_pulled = R_trigger_pulled && R_prev_pulled_;
+
+        L_prev_pulled_ = L_trigger_pulled;
+        R_prev_pulled_ = R_trigger_pulled;
+
         if (L_trigger_pulled && Time.time >= time_last_locater_wave_ + locater_wave_cooldown_time)
         {
             time_last_locater_wave_ = Time.time;
 
+            AudioSource LocateShoot1 = Instantiate(LocateWaveShoot);
+            LocateShoot1.Play();
+            Destroy(LocateShoot1, 10f);
+
             SpawnWave(my_location_color, wave_locater_obj, false);
         }
 
+
+        if (!L_constantly_pulled && L_trigger_pulled && Time.time < time_last_locater_wave_ + locater_wave_cooldown_time)
+        {
+
+            AudioSource Fizzle = Instantiate(AbilityFizzle);
+            Fizzle.Play();
+            Destroy(Fizzle, 10f);
+        }
+
+
         if (R_trigger_pulled && Time.time >= time_last_shot_wave_ + shot_wave_cooldown_time)
         {
+            AudioSource DamageShoot1 = Instantiate(DamageWaveShoot);
+            DamageShoot1.Play();
+            Destroy(DamageShoot1, 10f);
             time_last_shot_wave_ = Time.time;
 
             SpawnWave(my_color, wave_shot_obj, true);
+}
+        if (!R_constantly_pulled && R_trigger_pulled && Time.time < time_last_shot_wave_ + shot_wave_cooldown_time)
+        {
+            AudioSource Fizzle = Instantiate(AbilityFizzle);
+            Fizzle.Play();
+            Destroy(Fizzle, 10f);
         }
 
         //Rotation
@@ -176,7 +244,7 @@ public class Movement : MonoBehaviour
             }
 
             //Direct control Movement
-            //rg2D.velocity = new Vector2(Mathf.Lerp(0, move_h * speed, 0.8f),
+           //rg2D.velocity = new Vector2(Mathf.Lerp(0, move_h * speed, 0.8f),
             //Mathf.Lerp(0, move_v * speed, 0.8f));
         }else
         {

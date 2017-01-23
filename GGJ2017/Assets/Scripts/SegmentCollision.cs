@@ -10,6 +10,12 @@ public class SegmentCollision : MonoBehaviour {
 
     private WaveMovement wave_mov_script_;
 
+
+    //Audio
+    public AudioSource LocatePlayer;
+    public AudioSource LocateWall;
+
+
     // Use this for initialization
     void Start () {
         rb_ = GetComponent<Rigidbody2D>();
@@ -51,6 +57,8 @@ public class SegmentCollision : MonoBehaviour {
             return;
         }
 
+
+
         // If this is a destructive wave, the colliding object is a player that was not hit before, damage it!
         bool destructive = wave_mov_script_.IsDestructive();
         bool player_tag = collision.gameObject.CompareTag("Player");
@@ -62,9 +70,19 @@ public class SegmentCollision : MonoBehaviour {
             player.takeDamage(1);
             wave_mov_script_.setObjectHit(collision.gameObject.GetInstanceID());
 
+            AudioSource hitplayer_snd = Instantiate(LocatePlayer);
+            hitplayer_snd.Play();
+            Destroy(hitplayer_snd, 10f);
+
+        }
+        else
+        {
+            AudioSource hitwall_snd = Instantiate(LocateWall);
+            hitwall_snd.Play();
+            Destroy(hitwall_snd, 10f);
         }
 
-        Destroy(gameObject, 0.2f);
+        Destroy(gameObject, 0.1f);
     }
 
     void attemptLightUp(GameObject colider_obj)

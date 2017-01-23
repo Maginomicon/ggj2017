@@ -11,10 +11,14 @@ public class PlayerManager : MonoBehaviour {
     private Color winning_color_;
     private int winning_player_num_;
 
+    private bool end_game_;
+    private float switchToEndGameScreenTime;
+    public float end_game_delay = 3f;
+
     // Use this for initialization
     void Start()
     {
-
+        end_game_ = false;
     }
 
     public void SetNumPlayers(int num)
@@ -42,7 +46,9 @@ public class PlayerManager : MonoBehaviour {
         if (NumSurvivors() <= 1)
         {
             SetWinningPlayerDetails();
-            SceneManager.LoadScene("Win Screen");
+            end_game_ = true;
+            switchToEndGameScreenTime = Time.time + end_game_delay;
+
         }
 
     }
@@ -93,8 +99,12 @@ public class PlayerManager : MonoBehaviour {
         return winning_color_;
     }
 
-	// Update is called once per frame
-	void Update () {
-		
+
+	void FixedUpdate () {
+		if(end_game_ && Time.time >= switchToEndGameScreenTime)
+        {
+            end_game_ = false;
+            SceneManager.LoadScene("Win Screen");
+        }
 	}
 }
