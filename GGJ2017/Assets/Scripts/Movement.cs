@@ -190,7 +190,7 @@ public class Movement : MonoBehaviour
         L_prev_pulled_ = L_trigger_pulled;
         R_prev_pulled_ = R_trigger_pulled;
 
-        if (L_trigger_pulled && Time.time >= time_last_locater_wave_ + locater_wave_cooldown_time)
+        if (L_constantly_pulled && Time.time >= time_last_locater_wave_ + locater_wave_cooldown_time)
         {
             time_last_locater_wave_ = Time.time;
 
@@ -211,7 +211,7 @@ public class Movement : MonoBehaviour
         }
 
 
-        if (R_trigger_pulled && Time.time >= time_last_shot_wave_ + shot_wave_cooldown_time)
+        if (R_constantly_pulled && Time.time >= time_last_shot_wave_ + shot_wave_cooldown_time)
         {
             AudioSource DamageShoot1 = Instantiate(DamageWaveShoot);
             DamageShoot1.Play();

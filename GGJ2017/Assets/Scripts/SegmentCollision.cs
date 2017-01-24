@@ -69,17 +69,18 @@ public class SegmentCollision : MonoBehaviour {
             Movement player = collision.gameObject.GetComponent<Movement>();
             player.takeDamage(1);
             wave_mov_script_.setObjectHit(collision.gameObject.GetInstanceID());
-
-            AudioSource hitplayer_snd = Instantiate(LocatePlayer);
-            hitplayer_snd.Play();
-            Destroy(hitplayer_snd, 10f);
-
         }
         else
         {
             AudioSource hitwall_snd = Instantiate(LocateWall);
             hitwall_snd.Play();
             Destroy(hitwall_snd, 10f);
+        }
+        if (!destructive && player_tag && not_yet_hit)
+        {
+            AudioSource hitplayer_snd = Instantiate(LocatePlayer);
+            hitplayer_snd.Play();
+            Destroy(hitplayer_snd, 10f);
         }
 
         Destroy(gameObject);
